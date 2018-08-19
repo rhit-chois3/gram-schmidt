@@ -1,6 +1,6 @@
-// var matrix = [[4, 0, 0], [-2, 3, 0]];
+var matrix = [[4, 0, 0], [-2, 3, 0]];
 // var matrix = [[1, 2, 0], [8, 1, -6], [0, 0, 1]];
-var matrix = [[0, 0, 1, 1], [0, 1, 1, 0], [1, 1, 0, 0]];
+// var matrix = [[0, 0, 1, 1], [0, 1, 1, 0], [1, 1, 0, 0]];
 var orthoNormVecs = [];
 
 gramSchimdt(matrix);

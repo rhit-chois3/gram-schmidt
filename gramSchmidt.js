@@ -3,11 +3,12 @@ var matrix = [[4, 0, 0], [-2, 3, 0]];
 // var matrix = [[0, 0, 1, 1], [0, 1, 1, 0], [1, 1, 0, 0]];
 var orthoNormVecs = [];
 
-gramSchimdt(matrix);
+gramSchmidt(matrix[0], 0);
 
-function gramSchimdt(matrix) {
-    for (let i = 0; i < matrix.length; i++) {
-        var currentVec = matrix[i];
+function gramSchmidt(vector, i) {
+    while (i < matrix.length) {
+        // var currentVec = matrix[i];
+        var currentVec = vector;
         var orthoVec = [];
 
         // orthogonalization
@@ -29,8 +30,16 @@ function gramSchimdt(matrix) {
         var multiple = Math.sqrt(getDotProd(vector, vector));
         var normVec = multiply((1/multiple), vector);
         orthoNormVecs.push(normVec);
-    }
 
+        if ((i + 1) != matrix.length) {
+            return gramSchmidt(matrix[i + 1], (i + 1))
+        } else {
+            return logResult();
+        }
+    }
+}
+
+function logResult() {
     for (var i = 0; i < orthoNormVecs.length; i++) {
         console.log(matrix[i]);
         console.log(orthoNormVecs[i]);

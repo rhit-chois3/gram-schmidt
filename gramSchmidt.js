@@ -1,4 +1,4 @@
-var matrix = [[4, 0, 0], [-2, 3, 0]];
+var matrix = [[-2, 3, 0], [4, 0, 0]];
 // var matrix = [[1, 2, 0], [8, 1, -6], [0, 0, 1]];
 // var matrix = [[0, 0, 1, 1], [0, 1, 1, 0], [1, 1, 0, 0]];
 
@@ -6,6 +6,9 @@ var orthoNormVecs = gramSchmidt(matrix);
 for (let i = 0; i < orthoNormVecs.length; i++) {
     console.log(orthoNormVecs[i]);
 }
+
+var a = getDotProd(orthoNormVecs[0], orthoNormVecs[1])
+console.log('dot product of two normalized vectors', a);
 
 function gramSchmidt(matrix) {
     if (matrix.length == 0) {
@@ -29,10 +32,16 @@ function gramSchmidt(matrix) {
     }
 }
 
+function doThisProjection(newVec, vector) {
+    var dotProd = getDotProd(newVec, vector);
+    var resVec = multiply(dotProd, vector);
+    return resVec;
+}
+
 function project(newVec, vector) {
     var dotProd = getDotProd(newVec, vector);
-    var resVec = multiply(dotProd, newVec);
-    var orthoVec = subtract(resVec, vector);
+    var resVec = multiply(dotProd, vector);
+    var orthoVec = subtract(resVec, newVec);
     return orthoVec;
 }
 
@@ -40,13 +49,6 @@ function normalize(vector) {
     var multiple = Math.sqrt(getDotProd(vector, vector));
     var normVec = multiply((1/multiple), vector);
     return normVec;
-}
-
-function logResult() {
-    for (var i = 0; i < orthoNormVecs.length; i++) {
-        console.log(matrix[i]);
-        console.log(orthoNormVecs[i]);
-    }
 }
 
 function getDotProd(vec1, vec2) {

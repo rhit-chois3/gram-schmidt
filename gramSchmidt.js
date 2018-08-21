@@ -1,40 +1,45 @@
 var matrix = [[4, 0, 0], [-2, 3, 0]];
 // var matrix = [[1, 2, 0], [8, 1, -6], [0, 0, 1]];
 // var matrix = [[0, 0, 1, 1], [0, 1, 1, 0], [1, 1, 0, 0]];
-var orthoNormVecs = [];
 
-gramSchmidt(matrix[0], 0);
+var orthoNormVecs = gramSchmidt(matrix);
+for (let i = 0; i < orthoNormVecs.length; i++) {
+    console.log(orthoNormVecs[i]);
+}
 
-function gramSchmidt(vector, i) {
-    // var currentVec = matrix[i];
-    var currentVec = vector;
-    var orthoVec = [];
-
-    // orthogonalization
-    for (let j = 0; j < i; j++) {
-        var prevVectorNorm = orthoNormVecs[j];
-        var dotProd = getDotProd(prevVectorNorm, currentVec);
-        var resVec = multiply(dotProd, prevVectorNorm);
-        orthoVec = subtract(resVec, currentVec);
-    }
-
-    var vector = [];
-    if (orthoVec.length != 0) {
-        vector = orthoVec;
+function gramSchmidt(matrix) {
+    if (matrix.length == 0) {
+        return matrix;
     } else {
-        vector = currentVec;
-    }
+        var newVec = matrix[0];
+        var restVecs = matrix.slice(1);
+        var rest = gramSchmidt(restVecs);
 
-    // normalization
+        // orthogonalization
+        if (rest.length > 0) {
+            for (let i = 0; i < rest.length; i++) {
+                newVec = project(newVec, rest[i]);
+            }
+        }
+        var newNormVec = [normalize(newVec)];
+        var newArray = newNormVec.concat(rest);
+
+        // normalization
+        return (newArray);
+    }
+}
+
+function project(newVec, vector) {
+    var dotProd = getDotProd(newVec, vector);
+    var resVec = multiply(dotProd, newVec);
+    var orthoVec = subtract(resVec, vector);
+    return orthoVec;
+}
+
+function normalize(vector) {
     var multiple = Math.sqrt(getDotProd(vector, vector));
     var normVec = multiply((1/multiple), vector);
-    orthoNormVecs.push(normVec);
-
-    if ((i + 1) != matrix.length) {
-        return gramSchmidt(matrix[i + 1], (i + 1))
-    } else {
-        return logResult();
-    }
+    return normVec;
 }
 
 function logResult() {
